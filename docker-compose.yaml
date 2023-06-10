@@ -1,0 +1,46 @@
+version: '2.1'
+services:
+  db:
+    image: mysql:5.7
+    container_name: bugzilla-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: bugzilla
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: bugzilla
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"-uroot", "-pbugzilla", "ping"]
+        timeout: 20s
+        retries: 10
+    volumes:
+      - ./bugzilla-mysql/db:/var/lib/mysql
+    networks:
+      - bugzilla-net
+
+  bugzilla:
+    image: bugzilla:latest
+    build: .
+    container_name: bugzilla
+    ports:
+      - "8082:80"
+    volumes:
+      - ./bugzilla-data/images:/var/www/html/bugzilla/images
+      - ./bugzilla-data/data:/var/www/html/bugzilla/data
+      - ./bugzilla-data/lib:/var/www/html/bugzilla/lib
+    environment:
+      - BUGZILLA_DB_HOST=db
+      - BUGZILLA_DB_USER=root
+      - BUGZILLA_DB_PASS=bugzilla
+      - BUGZILLA_DB_NAME=bugzilla
+      - SERVERADMIN_EMAIL=xxx
+      - SERVERNAME=https://xxx
+      - BUGZILLA_ADMIN_EMAIL=xxx
+      - BUGZILLA_ADMIN_PASS=xxx
+      - BUGZILLA_ADMIN_REALNAMExxx
+    depends_on:
+      - db:
+          condition: service_healthy
+    networks:
+      - bugzilla-net
+
+networks:
+  bugzilla-net:

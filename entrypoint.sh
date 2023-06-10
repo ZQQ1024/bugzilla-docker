@@ -36,11 +36,11 @@ cat /tmp/checksetup_answers.txt
 # ------------------------- SECTION 2 ----------------------------------
 # setup postfix to receive mails from git to update bug comments from git commits
 # ----------------------------------------------------------------------
-if [ -z "$POSTFIX_HOSTNAME" -a -z "$POSTFIX_NETWORKS" ]; then
-	    echo >&2 'error: postfix option missing '
-	        echo >&2 '  You need to specify POSTFIX_HOSTNAME and POSTFIX_NETWORKS for receiving mails from a local git server'
-		    exit 1
-fi
+# if [ -z "$POSTFIX_HOSTNAME" -a -z "$POSTFIX_NETWORKS" ]; then
+# 	    echo >&2 'error: postfix option missing '
+# 	        echo >&2 '  You need to specify POSTFIX_HOSTNAME and POSTFIX_NETWORKS for receiving mails from a local git server'
+# 		    exit 1
+# fi
 
 # Create postfix folders
 mkdir -p /var/spool/postfix/
